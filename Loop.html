@@ -1,0 +1,1111 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Loop</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f5f7fb;--surface:#fff;--surface2:#f9fafb;
+  --border:#e5e9f2;--divider:#f0f3f9;
+  --text:#0d1424;--muted:#6b7a99;--subtle:#b0bcd4;
+  --p:#1a56db;--p2:#3b82f6;--p3:#60a5fa;
+  --green:#16a34a;--red:#dc2626;--amber:#d97706;--teal:#0d9488;--violet:#7c3aed;
+  --glow:0 0 0 3px rgba(26,86,219,.15);
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070c18;--surface:#0e1525;--surface2:#111929;
+  --border:#1a2540;--divider:#131d33;
+  --text:#dce6ff;--muted:#6b7fa8;--subtle:#2f3f5e;
+  --p:#3b82f6;--p2:#60a5fa;--p3:#93c5fd;
+  --green:#22c55e;--red:#f87171;--amber:#fbbf24;--teal:#2dd4bf;--violet:#a78bfa;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#070c18;--surface:#0e1525;--surface2:#111929;
+  --border:#1a2540;--divider:#131d33;
+  --text:#dce6ff;--muted:#6b7fa8;--subtle:#2f3f5e;
+  --p:#3b82f6;--p2:#60a5fa;--p3:#93c5fd;
+  --green:#22c55e;--red:#f87171;--amber:#fbbf24;--teal:#2dd4bf;--violet:#a78bfa;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:13px;overflow:hidden;}
+#app{display:flex;height:100%;}
+
+/* SIDEBAR */
+#sidebar{width:214px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
+.sb-logo{padding:14px 15px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border);}
+.lm{width:30px;height:30px;border-radius:9px;background:var(--p);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:14px;color:#fff;flex-shrink:0;}
+.logo-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:-.3px;}
+.sb-scroll{flex:1;overflow-y:auto;padding:8px 0 12px;}
+.sb-sec{padding:10px 13px 4px;font-size:9.5px;font-weight:700;color:var(--subtle);letter-spacing:.9px;text-transform:uppercase;}
+.si{padding:7px 11px;margin:1px 7px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);font-weight:500;transition:all .15s;user-select:none;}
+.si:hover{background:var(--divider);color:var(--text);}
+.si.active{background:rgba(26,86,219,.08);color:var(--p);}
+.sib{margin-left:auto;border-radius:9px;font-size:9.5px;font-weight:700;padding:1px 6px;}
+.sib-blue{background:rgba(26,86,219,.1);color:var(--p);}
+.sib-green{background:rgba(22,163,74,.1);color:var(--green);}
+.sib-amber{background:rgba(217,119,6,.1);color:var(--amber);}
+.sib-red{background:rgba(220,38,38,.1);color:var(--red);}
+.sb-acct{padding:10px 12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.sb-av{width:26px;height:26px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+
+/* TOPBAR */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+#topbar{height:48px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;}
+.tb-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;}
+.tb-pill{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
+.pill-live{background:rgba(22,163,74,.1);color:var(--green);border:1px solid rgba(22,163,74,.2);}
+.pill-warn{background:rgba(217,119,6,.1);color:var(--amber);border:1px solid rgba(217,119,6,.2);}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:7px;}
+.btn{padding:5px 12px;border-radius:7px;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;transition:all .15s;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-ghost:hover{border-color:var(--p);color:var(--p);}
+.btn-primary{background:var(--p);color:#fff;}
+.btn-primary:hover{filter:brightness(1.08);}
+.btn-sm{padding:3px 9px;font-size:10px;}
+.btn-danger{background:var(--red);color:#fff;}
+
+/* PANELS */
+.panel{display:none;flex:1;overflow:hidden;}
+.panel.active{display:flex;}
+
+/* ══ DASHBOARD ══ */
+#panel-dashboard{flex-direction:column;overflow-y:auto;padding:16px;gap:14px;}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 14px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.metric-label{font-size:9.5px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.metric-val{font-size:24px;font-weight:700;font-family:'Space Grotesk',sans-serif;}
+.metric-delta{font-size:11px;font-weight:600;margin-top:3px;}
+.up{color:var(--green);} .dn{color:var(--red);}
+.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:12px;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.cc-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.txn-feed{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.txn-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--divider);cursor:pointer;transition:background .1s;}
+.txn-row:hover{background:var(--divider);margin:0 -4px;padding:7px 4px;border-radius:5px;}
+.txn-row:last-child{border-bottom:none;}
+.txn-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.txn-desc{flex:1;min-width:0;}
+.txn-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.txn-meta{font-size:11px;color:var(--muted);}
+.txn-amt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;text-align:right;flex-shrink:0;}
+.txn-status{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+.ts-settled{background:rgba(22,163,74,.1);color:var(--green);}
+.ts-pend{background:rgba(217,119,6,.1);color:var(--amber);}
+.ts-fail{background:rgba(220,38,38,.1);color:var(--red);}
+
+/* ══ PAYMENTS ══ */
+#panel-payments{flex-direction:column;overflow:hidden;}
+.pay-layout{flex:1;display:flex;overflow:hidden;}
+.pay-left{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.pay-toolbar{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;background:var(--surface);flex-shrink:0;}
+.search-box{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:6px 11px;font-size:12px;color:var(--text);font-family:'Inter',sans-serif;outline:none;}
+.search-box:focus{border-color:var(--p);}
+.search-box::placeholder{color:var(--subtle);}
+.filter-tag{padding:3px 9px;border-radius:20px;border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .14s;user-select:none;}
+.filter-tag.on{border-color:var(--p);background:rgba(26,86,219,.07);color:var(--p);}
+.table-wrap{flex:1;overflow-y:auto;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;padding:9px 13px;font-size:9.5px;font-weight:700;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--surface2);position:sticky;top:0;}
+td{padding:9px 13px;font-size:12px;border-bottom:1px solid var(--divider);}
+tr:hover td{background:var(--divider);}
+.flag{font-size:14px;}
+.pay-right{width:280px;border-left:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;}
+.pr-header{padding:12px 13px;border-bottom:1px solid var(--border);}
+.pr-id{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;}
+.pr-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;}
+.pr-body{flex:1;overflow-y:auto;padding:12px 13px;}
+.pr-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--divider);font-size:12px;}
+.pr-val{font-weight:600;}
+.timeline-steps{margin-top:10px;}
+.ts-step{display:flex;gap:9px;position:relative;padding-bottom:12px;}
+.ts-line{position:absolute;left:9px;top:20px;bottom:0;width:1px;background:var(--divider);}
+.ts-dot{width:19px;height:19px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;}
+.ts-info{flex:1;}
+.ts-step-title{font-size:12px;font-weight:600;}
+.ts-step-time{font-size:11px;color:var(--muted);}
+
+/* ══ LEDGER ══ */
+#panel-ledger{flex-direction:column;overflow:hidden;}
+.ledger-toolbar{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;background:var(--surface);flex-shrink:0;}
+.acct-selector{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:6px 11px;font-size:12px;color:var(--text);font-family:'Inter',sans-serif;outline:none;cursor:pointer;}
+.balance-pill{padding:5px 12px;border-radius:20px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;}
+.ledger-table-wrap{flex:1;overflow-y:auto;}
+.ledger-row{display:grid;grid-template-columns:120px 1fr 100px 110px 110px 90px;gap:0;border-bottom:1px solid var(--divider);padding:8px 16px;align-items:center;cursor:pointer;transition:background .1s;}
+.ledger-row:hover{background:var(--divider);}
+.ledger-row.header{background:var(--surface2);font-size:9.5px;font-weight:700;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;cursor:default;position:sticky;top:0;}
+.ledger-row.header:hover{background:var(--surface2);}
+.dr{color:var(--red);} .cr{color:var(--green);}
+.mono{font-family:'JetBrains Mono',sans-serif;font-size:11px;}
+
+/* ══ API ══ */
+#panel-api{flex-direction:row;overflow:hidden;}
+.api-left{width:260px;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;}
+.api-scroll{flex:1;overflow-y:auto;padding:10px 0;}
+.api-sec{padding:9px 13px 4px;font-size:9.5px;font-weight:700;color:var(--subtle);letter-spacing:.8px;text-transform:uppercase;}
+.ep{padding:7px 13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .12s;}
+.ep:hover{background:var(--divider);}
+.ep.active{background:rgba(26,86,219,.07);}
+.ep-method{font-family:'JetBrains Mono',sans-serif;font-size:9.5px;font-weight:700;padding:2px 5px;border-radius:4px;min-width:36px;text-align:center;}
+.m-get{background:rgba(13,148,136,.12);color:var(--teal);}
+.m-post{background:rgba(26,86,219,.12);color:var(--p);}
+.m-patch{background:rgba(124,58,237,.12);color:var(--violet);}
+.m-delete{background:rgba(220,38,38,.1);color:var(--red);}
+.ep-path{font-size:11px;font-family:'JetBrains Mono',sans-serif;color:var(--text);flex:1;}
+.api-right{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.api-top{flex:1;overflow-y:auto;padding:16px;}
+.api-playground{background:var(--surface2);border:1px solid var(--border);border-radius:9px;overflow:hidden;}
+.ap-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;background:var(--surface);}
+.ap-url{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-family:'JetBrains Mono',sans-serif;font-size:11px;color:var(--text);outline:none;}
+.ap-send{background:var(--p);color:#fff;border:none;border-radius:6px;padding:5px 13px;font-weight:700;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;}
+.api-pane{padding:14px;font-family:'JetBrains Mono',sans-serif;font-size:11px;line-height:1.75;color:var(--muted);}
+.jk{color:#c792ea;} .js{color:#a5d6a7;} .jn{color:#82b1ff;} .jb{color:#80cbc4;} .je{color:#ef9a9a;}
+
+/* ══ OBSERVE ══ */
+#panel-observe{flex-direction:column;overflow-y:auto;padding:16px;gap:12px;}
+.obs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.obs-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.obs-title{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between;}
+.svc-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--divider);font-size:12px;}
+.svc-row:last-child{border-bottom:none;}
+.svc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.svc-name{flex:1;}
+.svc-p99{font-family:'JetBrains Mono',sans-serif;font-size:11px;color:var(--muted);}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.bar-label{font-size:11px;color:var(--text);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-bg{flex:1;height:7px;background:var(--divider);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:var(--p);transition:width .6s ease;}
+.bar-pct{font-size:10px;font-family:'JetBrains Mono',sans-serif;color:var(--muted);width:28px;text-align:right;flex-shrink:0;}
+.log-line{font-family:'JetBrains Mono',sans-serif;font-size:11px;line-height:1.65;padding:3px 0;border-bottom:1px solid var(--divider);color:var(--muted);}
+.log-line:last-child{border-bottom:none;}
+.log-info{color:var(--p2);} .log-warn{color:var(--amber);} .log-err{color:var(--red);} .log-ok{color:var(--green);}
+
+/* ══ CODE ══ */
+#panel-code{flex-direction:column;overflow:hidden;}
+.code-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;background:var(--surface);}
+.code-tab{padding:9px 14px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0;transition:all .14s;}
+.code-tab:hover{color:var(--text);}
+.code-tab.active{color:var(--p);border-bottom-color:var(--p);}
+.code-content{flex:1;overflow-y:auto;background:var(--bg);}
+.code-block{padding:16px;font-family:'JetBrains Mono',sans-serif;font-size:11.5px;line-height:1.75;}
+pre{white-space:pre-wrap;word-break:break-word;}
+.ck{color:#c792ea;} .cs{color:#a5d6a7;} .cn{color:#82b1ff;} .cf{color:#80cbc4;} .cc{color:#546e7a;font-style:italic;} .co{color:#ffcb6b;} .cm{color:#ef9a9a;}
+
+/* MODAL */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(1px);}
+#modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:460px;max-height:82vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.18);}
+.mh{padding:15px 17px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.mh h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;}
+.mclose{background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;line-height:1;}
+.mb{padding:16px 17px;}
+.fl{margin-bottom:11px;}
+.fl label{display:block;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;}
+.fi{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--p);}
+.fi::placeholder{color:var(--subtle);}
+.fs{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;outline:none;}
+.mf{padding:11px 17px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:7px;}
+.rate-box{background:var(--divider);border-radius:8px;padding:9px 11px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--p);text-align:center;margin-bottom:9px;}
+.rate-sub{font-size:11px;color:var(--muted);text-align:center;margin-top:3px;font-family:'Inter',sans-serif;font-weight:400;}
+
+/* TOAST */
+#toast{position:fixed;bottom:16px;right:16px;background:var(--text);color:var(--bg);border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;display:none;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+
+/* sparkline canvas */
+canvas{display:block;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+</style>
+
+<div id="app">
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sb-logo"><div class="lm">L</div><div class="logo-name">Loop</div></div>
+  <div class="sb-scroll">
+    <div class="sb-sec">Banking</div>
+    <div class="si active" id="nav-dashboard" onclick="showPanel('dashboard',this)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="7.5" y="1.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="7.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="7.5" y="7.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+      Dashboard
+    </div>
+    <div class="si" id="nav-payments" onclick="showPanel('payments',this)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3.5" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 6.5h12" stroke="currentColor" stroke-width="1.3"/></svg>
+      Payments
+      <span class="sib sib-blue">1,284</span>
+    </div>
+    <div class="si" id="nav-ledger" onclick="showPanel('ledger',this)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h10M2 5h10M2 8h7M2 11h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Ledger
+    </div>
+    <div class="sb-sec">Platform</div>
+    <div class="si" id="nav-api" onclick="showPanel('api',this)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 4L2 7l3 3M9 4l3 3-3 3M8 2l-2 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      API Explorer
+      <span class="sib sib-green">Live</span>
+    </div>
+    <div class="si" id="nav-observe" onclick="showPanel('observe',this)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 7c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" stroke="currentColor" stroke-width="1.3"/></svg>
+      Observability
+    </div>
+    <div class="si" id="nav-code" onclick="showPanel('code',this)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4.5 4L2 7l2.5 3M9.5 4L12 7l-2.5 3M8 3l-2 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Codebase
+    </div>
+    <div class="sb-sec">Admin</div>
+    <div class="si" onclick="showToast('Compliance dashboard — 3 pending reviews')">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3v4c0 3 2.2 5.4 5 6 2.8-.6 5-3 5-6V3L7 1z" stroke="currentColor" stroke-width="1.3"/></svg>
+      Compliance
+      <span class="sib sib-amber">3</span>
+    </div>
+    <div class="si" onclick="showToast('Partner integrations — Wise, Stripe, Plaid connected')">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="3" cy="7" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="11" cy="3" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 7h3M11 5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Partners
+      <span class="sib sib-green">3</span>
+    </div>
+    <div class="si" onclick="showToast('Alert: 1 DLQ message — payments.failed.retry')">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L1 11h12L7 2z" stroke="currentColor" stroke-width="1.3"/><path d="M7 6v3M7 10.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Alerts
+      <span class="sib sib-red">1</span>
+    </div>
+  </div>
+  <div class="sb-acct">
+    <div class="sb-av">JP</div>
+    <div>
+      <div style="font-size:12px;font-weight:600">JP Parekh</div>
+      <div style="font-size:10px;color:var(--muted)">Software Developer</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" style="margin-left:auto;padding:3px 7px" onclick="toggleTheme()">◑</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <div class="tb-title" id="tb-title">Loop Banking Dashboard</div>
+    <div class="tb-pill pill-live" id="tb-pill">● All systems operational</div>
+    <div class="tb-right">
+      <button class="btn btn-ghost btn-sm" onclick="showToast('Heroku deploy log opened')">Heroku</button>
+      <button class="btn btn-ghost btn-sm" onclick="openModal('send')">Send Payment</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('send')">+ New Payment</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dashboard">
+    <div class="metrics-row">
+      <div class="metric"><div class="metric-label">Total Volume (30d)</div><div class="metric-val" style="color:var(--p)">$4.2M</div><div class="metric-delta up">↑ 18% MoM</div></div>
+      <div class="metric"><div class="metric-label">Active Businesses</div><div class="metric-val" style="color:var(--green)">3,841</div><div class="metric-delta up">↑ 214 this month</div></div>
+      <div class="metric"><div class="metric-label">Avg FX Savings</div><div class="metric-val" style="color:var(--teal)">2.4%</div><div class="metric-delta up">↑ vs big banks</div></div>
+      <div class="metric"><div class="metric-label">Failed Payments</div><div class="metric-val" style="color:var(--red)">0.3%</div><div class="metric-delta up">↓ 0.1% this week</div></div>
+    </div>
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="cc-title">Payment Volume — Last 14 days<button class="btn btn-ghost btn-sm" onclick="showToast('CSV export triggered')">Export</button></div>
+        <canvas id="vol-chart" height="100"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="cc-title">FX Corridors</div>
+        <div id="corridors"></div>
+      </div>
+    </div>
+    <div class="txn-feed">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center">
+        Live Transactions
+        <button class="btn btn-ghost btn-sm" onclick="showPanel('payments',document.getElementById('nav-payments'))">View all →</button>
+      </div>
+      <div id="txn-feed"></div>
+    </div>
+  </div>
+
+  <!-- PAYMENTS -->
+  <div class="panel" id="panel-payments">
+    <div class="pay-layout">
+      <div class="pay-left">
+        <div class="pay-toolbar">
+          <input class="search-box" id="pay-search" placeholder="Search by business, ID, currency…" oninput="filterPayments()">
+          <div class="filter-tag on" onclick="toggleFilter(this,'Settled')">Settled</div>
+          <div class="filter-tag on" onclick="toggleFilter(this,'Pending')">Pending</div>
+          <div class="filter-tag" onclick="toggleFilter(this,'Failed')">Failed</div>
+          <span style="font-size:11px;color:var(--muted)" id="pay-count">12 of 1,284</span>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr>
+            <th>ID</th><th>Business</th><th>Corridor</th><th>Amount</th><th>FX Rate</th><th>Status</th><th>Time</th><th></th>
+          </tr></thead>
+          <tbody id="pay-tbody"></tbody></table>
+        </div>
+      </div>
+      <div class="pay-right" id="pay-detail">
+        <div class="pr-header">
+          <div class="pr-id">Transaction Detail</div>
+          <div class="pr-title" id="prd-title">Select a payment</div>
+        </div>
+        <div class="pr-body" id="prd-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEDGER -->
+  <div class="panel" id="panel-ledger">
+    <div class="ledger-toolbar">
+      <select class="acct-selector" id="ledger-acct" onchange="buildLedger()">
+        <option value="cad">CAD Operating Account</option>
+        <option value="usd">USD Float Account</option>
+        <option value="gbp">GBP Settlement Account</option>
+      </select>
+      <div class="balance-pill" id="ledger-balance" style="background:rgba(22,163,74,.1);color:var(--green)">Balance: CAD $284,120.00</div>
+      <span style="margin-left:auto;font-size:11px;color:var(--muted)" id="ledger-count">24 entries</span>
+      <button class="btn btn-ghost btn-sm" onclick="showToast('Ledger exported as CSV')">Export</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('journal')">+ Journal Entry</button>
+    </div>
+    <div class="ledger-table-wrap">
+      <div class="ledger-row header">
+        <span>Date</span><span>Description</span><span>Ref</span><span>Debit</span><span>Credit</span><span>Balance</span>
+      </div>
+      <div id="ledger-rows"></div>
+    </div>
+  </div>
+
+  <!-- API -->
+  <div class="panel" id="panel-api">
+    <div class="api-left">
+      <div style="padding:10px 13px 2px;font-size:12px;font-weight:600;">Loop API v2</div>
+      <div class="api-scroll" id="api-endpoints"></div>
+    </div>
+    <div class="api-right">
+      <div class="api-top">
+        <div class="api-playground">
+          <div class="ap-header">
+            <span class="ep-method m-post" id="ap-method">POST</span>
+            <input class="ap-url" id="ap-url" value="/v2/payments" readonly>
+            <button class="ap-send" onclick="runApi()">Send →</button>
+          </div>
+          <div class="api-pane" id="api-request"></div>
+        </div>
+        <div style="margin-top:10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;">
+          <div style="padding:9px 14px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;">
+            Response <span id="api-status-badge" style="font-size:10px;padding:1px 8px;border-radius:10px;background:rgba(22,163,74,.1);color:var(--green);font-weight:700">200 OK</span>
+          </div>
+          <div class="api-pane" id="api-response"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBSERVE -->
+  <div class="panel" id="panel-observe">
+    <div class="obs-grid">
+      <div class="obs-card">
+        <div class="obs-title">Service Health<span style="color:var(--green);font-weight:700">● All OK</span></div>
+        <div id="svc-health"></div>
+      </div>
+      <div class="obs-card">
+        <div class="obs-title">Error Rate by Service</div>
+        <div id="error-rates"></div>
+      </div>
+      <div class="obs-card">
+        <div class="obs-title">Infrastructure<span style="font-size:10px;color:var(--muted)">Heroku / AWS</span></div>
+        <div id="infra-status"></div>
+      </div>
+    </div>
+    <div class="obs-card" style="margin-top:0">
+      <div class="obs-title">Production Logs — Live<button class="btn btn-ghost btn-sm" onclick="showToast('Log stream connected')">Stream</button></div>
+      <div id="prod-logs"></div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="panel" id="panel-code">
+    <div class="code-tabs">
+      <div class="code-tab active" onclick="switchCode('payment',this)">Payment Service (Rails)</div>
+      <div class="code-tab" onclick="switchCode('ledger',this)">Ledger Model</div>
+      <div class="code-tab" onclick="switchCode('fx',this)">FX Rate Service</div>
+      <div class="code-tab" onclick="switchCode('react',this)">React Transfer UI</div>
+      <div class="code-tab" onclick="switchCode('django',this)">Django Analytics</div>
+      <div class="code-tab" onclick="switchCode('spec',this)">RSpec Test</div>
+    </div>
+    <div class="code-content"><div class="code-block" id="code-display"></div></div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mh"><h3 id="modal-title">Send International Payment</h3><button class="mclose" onclick="closeModal()">✕</button></div>
+    <div class="mb" id="modal-body">
+      <div class="fl"><label>From account</label>
+        <select class="fs" id="f-from"><option>CAD Operating · $284,120.00</option><option>USD Float · $142,880.00</option><option>GBP Settlement · £48,220.00</option></select></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <div class="fl"><label>Amount</label><input class="fi" id="f-amt" placeholder="10,000.00" oninput="updateRate()"></div>
+        <div class="fl"><label>Currency</label>
+          <select class="fs" id="f-currency" onchange="updateRate()"><option>USD</option><option>EUR</option><option>GBP</option><option>MXN</option><option>INR</option><option>PHP</option></select></div>
+      </div>
+      <div class="rate-box" id="rate-box">Enter amount to see rate</div>
+      <div class="fl"><label>Recipient business</label><input class="fi" id="f-recip" placeholder="Acme Corp — account ending 4821"></div>
+      <div class="fl"><label>Payment reference</label><input class="fi" id="f-ref" placeholder="INV-2026-0441"></div>
+      <div class="fl"><label>Routing</label>
+        <select class="fs" id="f-route"><option>Wise (fastest · 1 day)</option><option>SWIFT (2–4 days)</option><option>Stripe Treasury</option><option>Direct bank rail</option></select></div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitPayment()">Send Payment →</button>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+// ── THEME ──
+function toggleTheme(){
+  const r=document.documentElement;
+  r.setAttribute('data-theme',r.getAttribute('data-theme')==='dark'?'light':'dark');
+  setTimeout(drawVolumeChart,50);
+}
+
+// ── TOAST ──
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2800);
+}
+
+// ── PANEL NAV ──
+function showPanel(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.si').forEach(i=>i.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  const TI={dashboard:'Loop Banking Dashboard',payments:'Payments — Cross-Border',ledger:'General Ledger',api:'API Explorer',observe:'Observability',code:'Codebase'};
+  const TP={dashboard:'● All systems operational',payments:'● 1,284 transactions today',ledger:'● Double-entry accounting',api:'● API v2 · 99.98% uptime',observe:'● Real-time monitoring',code:'● main · Rails + React + Django'};
+  document.getElementById('tb-title').textContent=TI[id]||id;
+  document.getElementById('tb-pill').textContent=TP[id]||'';
+  if(id==='code') initCode();
+  if(id==='api') initApi();
+  if(id==='observe') animateObserve();
+}
+
+// ── DASHBOARD CHART ──
+const VOL=[38,42,51,44,67,72,58,83,91,78,105,96,112,124];
+function drawVolumeChart(){
+  const cv=document.getElementById('vol-chart');
+  if(!cv) return;
+  const dark=document.documentElement.getAttribute('data-theme')==='dark'||
+    (window.matchMedia('(prefers-color-scheme:dark)').matches&&document.documentElement.getAttribute('data-theme')!=='light');
+  cv.width=cv.parentElement.clientWidth-28;cv.height=100;
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height,pad=8;
+  const max=Math.max(...VOL),min=Math.min(...VOL);
+  const xs=VOL.map((_,i)=>pad+i*(W-pad*2)/(VOL.length-1));
+  const ys=VOL.map(v=>H-pad-(v-min)/(max-min)*(H-pad*2));
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'rgba(26,86,219,.2)');
+  grad.addColorStop(1,'rgba(26,86,219,0)');
+  ctx.clearRect(0,0,W,H);
+  // area
+  ctx.beginPath();ctx.moveTo(xs[0],ys[0]);
+  for(let i=1;i<xs.length;i++) ctx.lineTo(xs[i],ys[i]);
+  ctx.lineTo(xs[xs.length-1],H);ctx.lineTo(xs[0],H);ctx.closePath();
+  ctx.fillStyle=grad;ctx.fill();
+  // line
+  ctx.beginPath();ctx.moveTo(xs[0],ys[0]);
+  for(let i=1;i<xs.length;i++) ctx.lineTo(xs[i],ys[i]);
+  ctx.strokeStyle='#3b82f6';ctx.lineWidth=2;ctx.stroke();
+  // dots + labels
+  xs.forEach((x,i)=>{
+    ctx.beginPath();ctx.arc(x,ys[i],3,0,Math.PI*2);
+    ctx.fillStyle='#3b82f6';ctx.fill();
+  });
+  const days=['28','29','30','1','2','3','4','5','6','7','8','9','10','11'];
+  ctx.fillStyle=dark?'#6b7fa8':'#9ca3af';ctx.font='10px Inter';ctx.textAlign='center';
+  xs.forEach((x,i)=>{if(i%3===0) ctx.fillText(days[i],x,H-1);});
+}
+
+// ── FX CORRIDORS ──
+const CORRIDORS=[
+  {from:'CAD',to:'USD',rate:'0.7312',vol:'$1.2M',pct:88},
+  {from:'CAD',to:'GBP',rate:'0.5841',vol:'$840K',pct:62},
+  {from:'CAD',to:'EUR',rate:'0.6703',vol:'$710K',pct:52},
+  {from:'CAD',to:'MXN',rate:'12.84',vol:'$390K',pct:29},
+  {from:'CAD',to:'INR',rate:'60.42',vol:'$220K',pct:17},
+];
+function buildCorridors(){
+  const wrap=document.getElementById('corridors');
+  CORRIDORS.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='bar-row';
+    d.innerHTML=`<div class="bar-label">${c.from}→${c.to} <span style="font-family:'JetBrains Mono',sans-serif;font-size:10px;color:var(--muted)">${c.rate}</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:${c.pct}%;background:var(--p)"></div></div>
+    <div class="bar-pct">${c.vol}</div>`;
+    wrap.appendChild(d);
+  });
+}
+
+// ── TXN FEED ──
+const TXN_DATA=[
+  {id:'txn_8A2k',biz:'Maple Import Co.',corridor:'CAD→USD',amt:'$12,440',fx:'0.7312',status:'Settled',time:'just now',bg:'rgba(22,163,74,.1)',icon:'🇨🇦'},
+  {id:'txn_7F9x',biz:'Pacific Freight Ltd.',corridor:'CAD→GBP',amt:'$8,200',fx:'0.5841',status:'Settled',time:'2m',bg:'rgba(22,163,74,.1)',icon:'🇬🇧'},
+  {id:'txn_6B1m',biz:'Sundial Media Inc.',corridor:'CAD→EUR',amt:'$4,900',fx:'0.6703',status:'Pending',time:'4m',bg:'rgba(217,119,6,.1)',icon:'🇪🇺'},
+  {id:'txn_5C3n',biz:'Northern Steel Corp.',corridor:'CAD→MXN',amt:'$31,000',fx:'12.84',status:'Settled',time:'7m',bg:'rgba(22,163,74,.1)',icon:'🇲🇽'},
+  {id:'txn_4D2p',biz:'Lakeview Pharma',corridor:'CAD→INR',amt:'$7,600',fx:'60.42',status:'Settled',time:'11m',bg:'rgba(22,163,74,.1)',icon:'🇮🇳'},
+  {id:'txn_3E8q',biz:'Redwood Tech',corridor:'CAD→USD',amt:'$2,100',fx:'0.7312',status:'Failed',time:'15m',bg:'rgba(220,38,38,.1)',icon:'🇺🇸'},
+];
+function buildTxnFeed(){
+  const wrap=document.getElementById('txn-feed');
+  TXN_DATA.forEach(t=>{
+    const d=document.createElement('div');d.className='txn-row';
+    const sc={'Settled':'ts-settled','Pending':'ts-pend','Failed':'ts-fail'}[t.status];
+    d.innerHTML=`<div class="txn-icon" style="background:${t.bg}">${t.icon}</div>
+    <div class="txn-desc"><div class="txn-name">${t.biz}</div><div class="txn-meta">${t.id} · ${t.corridor}</div></div>
+    <div class="txn-amt">${t.amt}</div>
+    <div class="txn-status ${sc}">${t.status}</div>
+    <div style="font-size:11px;color:var(--subtle)">${t.time}</div>`;
+    d.onclick=()=>{showPanel('payments',document.getElementById('nav-payments'));loadPaymentDetail(t);};
+    wrap.appendChild(d);
+  });
+}
+let liveTxnTimer;
+function startLiveTxn(){
+  const MORE=[
+    {id:'txn_'+Math.random().toString(36).slice(2,6),biz:'Brightside Foods Ltd.',corridor:'CAD→USD',amt:'$6,800',fx:'0.7312',status:'Settled',time:'just now',bg:'rgba(22,163,74,.1)',icon:'🇺🇸'},
+    {id:'txn_'+Math.random().toString(36).slice(2,6),biz:'True North Logistics',corridor:'CAD→GBP',amt:'$3,220',fx:'0.5841',status:'Settled',time:'just now',bg:'rgba(22,163,74,.1)',icon:'🇬🇧'},
+    {id:'txn_'+Math.random().toString(36).slice(2,6),biz:'Clearwater Exports',corridor:'CAD→EUR',amt:'$9,100',fx:'0.6703',status:'Pending',time:'just now',bg:'rgba(217,119,6,.1)',icon:'🇪🇺'},
+  ];
+  let mi=0;
+  liveTxnTimer=setInterval(()=>{
+    const wrap=document.getElementById('txn-feed');
+    if(!wrap) return;
+    const t=MORE[mi%MORE.length];mi++;
+    const sc={'Settled':'ts-settled','Pending':'ts-pend','Failed':'ts-fail'}[t.status];
+    const d=document.createElement('div');d.className='txn-row';
+    d.innerHTML=`<div class="txn-icon" style="background:${t.bg}">${t.icon}</div>
+    <div class="txn-desc"><div class="txn-name">${t.biz}</div><div class="txn-meta">${t.id} · ${t.corridor}</div></div>
+    <div class="txn-amt">${t.amt}</div>
+    <div class="txn-status ${sc}">${t.status}</div>
+    <div style="font-size:11px;color:var(--subtle)">just now</div>`;
+    d.style.opacity='0';d.style.transition='opacity .4s';
+    wrap.prepend(d);setTimeout(()=>d.style.opacity='1',30);
+    while(wrap.children.length>8) wrap.removeChild(wrap.lastChild);
+  },5000);
+}
+
+// ── PAYMENTS TABLE ──
+const PAY_DATA=[
+  {id:'txn_8A2k',biz:'Maple Import Co.',corridor:'CAD→USD',flag:'🇺🇸',amt:'CA$16,980',fx:'0.7312',status:'Settled',time:'09:14'},
+  {id:'txn_7F9x',biz:'Pacific Freight Ltd.',corridor:'CAD→GBP',flag:'🇬🇧',amt:'CA$14,040',fx:'0.5841',status:'Settled',time:'09:11'},
+  {id:'txn_6B1m',biz:'Sundial Media Inc.',corridor:'CAD→EUR',flag:'🇪🇺',amt:'CA$7,310',fx:'0.6703',status:'Pending',time:'09:08'},
+  {id:'txn_5C3n',biz:'Northern Steel Corp.',corridor:'CAD→MXN',flag:'🇲🇽',amt:'CA$42,100',fx:'12.840',status:'Settled',time:'09:03'},
+  {id:'txn_4D2p',biz:'Lakeview Pharma',corridor:'CAD→INR',flag:'🇮🇳',amt:'CA$10,350',fx:'60.420',status:'Settled',time:'08:52'},
+  {id:'txn_3E8q',biz:'Redwood Tech',corridor:'CAD→USD',flag:'🇺🇸',amt:'CA$2,870',fx:'0.7312',status:'Failed',time:'08:44'},
+  {id:'txn_2G7r',biz:'Prairie Grain Inc.',corridor:'CAD→EUR',flag:'🇪🇺',amt:'CA$5,500',fx:'0.6703',status:'Settled',time:'08:31'},
+  {id:'txn_1H4s',biz:'Blue Mountain Ski Co.',corridor:'CAD→USD',flag:'🇺🇸',amt:'CA$3,210',fx:'0.7312',status:'Settled',time:'08:20'},
+  {id:'txn_0I5t',biz:'Aurora Mining Ltd.',corridor:'CAD→GBP',flag:'🇬🇧',amt:'CA$22,000',fx:'0.5841',status:'Pending',time:'08:11'},
+  {id:'txn_9J6u',biz:'Cascades Paper Co.',corridor:'CAD→MXN',flag:'🇲🇽',amt:'CA$8,800',fx:'12.840',status:'Settled',time:'07:58'},
+  {id:'txn_8K3v',biz:'True North Logistics',corridor:'CAD→INR',flag:'🇮🇳',amt:'CA$1,980',fx:'60.420',status:'Settled',time:'07:40'},
+  {id:'txn_7L2w',biz:'Ridgeline Solar',corridor:'CAD→EUR',flag:'🇪🇺',amt:'CA$14,200',fx:'0.6703',status:'Settled',time:'07:28'},
+];
+let activeFilters=['Settled','Pending'];
+function toggleFilter(el,f){
+  el.classList.toggle('on');
+  if(el.classList.contains('on')) activeFilters.push(f);
+  else activeFilters=activeFilters.filter(x=>x!==f);
+  filterPayments();
+}
+function filterPayments(){
+  const q=(document.getElementById('pay-search')||{value:''}).value.toLowerCase();
+  const list=PAY_DATA.filter(p=>{
+    const matchQ=!q||(p.biz+p.id+p.corridor).toLowerCase().includes(q);
+    const matchF=activeFilters.includes(p.status);
+    return matchQ&&matchF;
+  });
+  buildPayTable(list);
+  document.getElementById('pay-count').textContent=list.length+' of 1,284';
+}
+function buildPayTable(list){
+  const tb=document.getElementById('pay-tbody');
+  tb.innerHTML='';
+  list.forEach(p=>{
+    const sc={'Settled':'ts-settled','Pending':'ts-pend','Failed':'ts-fail'}[p.status];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span style="font-family:'JetBrains Mono',sans-serif;font-size:10px;color:var(--muted)">${p.id}</span></td>
+    <td><b>${p.biz}</b></td>
+    <td>${p.flag} ${p.corridor}</td>
+    <td><b style="font-family:'Space Grotesk',sans-serif;font-size:12px">${p.amt}</b></td>
+    <td><span style="font-family:'JetBrains Mono',sans-serif;font-size:11px;color:var(--muted)">${p.fx}</span></td>
+    <td><span class="txn-status ${sc}">${p.status}</span></td>
+    <td style="color:var(--subtle);font-family:'JetBrains Mono',sans-serif;font-size:10px">${p.time}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="loadPaymentDetail(PAY_DATA.find(x=>x.id==='${p.id}'))">View</button></td>`;
+    tb.appendChild(tr);
+  });
+}
+function loadPaymentDetail(t){
+  if(!t) return;
+  document.getElementById('prd-title').textContent=t.biz;
+  const steps=[
+    {label:'Payment created',time:t.time+':00',color:'var(--p)'},
+    {label:'FX rate locked',time:t.time+':00',color:'var(--teal)'},
+    {label:'Bank validation',time:t.time+':02',color:t.status==='Failed'?'var(--red)':'var(--p)'},
+    {label:'Sent via '+( t.status==='Pending'?'Wise (in transit)':t.status==='Failed'?'—':'Wise'),time:t.time+':04',color:t.status==='Settled'?'var(--green)':t.status==='Failed'?'var(--red)':'var(--amber)'},
+  ];
+  const sc={'Settled':'ts-settled','Pending':'ts-pend','Failed':'ts-fail'}[t.status];
+  document.getElementById('prd-body').innerHTML=`
+    <div class="pr-row"><span>Transaction ID</span><span class="pr-val mono" style="font-size:11px">${t.id}</span></div>
+    <div class="pr-row"><span>Business</span><span class="pr-val">${t.biz}</span></div>
+    <div class="pr-row"><span>Corridor</span><span class="pr-val">${t.flag} ${t.corridor}</span></div>
+    <div class="pr-row"><span>Amount</span><span class="pr-val" style="font-family:'Space Grotesk',sans-serif">${t.amt}</span></div>
+    <div class="pr-row"><span>FX Rate</span><span class="pr-val mono">${t.fx}</span></div>
+    <div class="pr-row"><span>Status</span><span class="txn-status ${sc}">${t.status}</span></div>
+    <div class="pr-row"><span>Time</span><span class="pr-val">${t.time} today</span></div>
+    <div class="timeline-steps">${steps.map((s,i)=>`
+      <div class="ts-step">
+        ${i<steps.length-1?'<div class="ts-line"></div>':''}
+        <div class="ts-dot" style="background:${s.color}">${i+1}</div>
+        <div class="ts-info"><div class="ts-step-title">${s.label}</div><div class="ts-step-time">${s.time}</div></div>
+      </div>`).join('')}
+    </div>
+    <div style="margin-top:10px;display:flex;gap:6px">
+      <button class="btn btn-ghost btn-sm" onclick="showToast('Audit log for ${t.id} opened')">Audit log</button>
+      ${t.status==='Failed'?'<button class="btn btn-danger btn-sm" onclick="showToast(\'Retry queued — ${t.id}\')">Retry</button>':''}
+    </div>`;
+}
+
+// ── LEDGER ──
+const LEDGER_DATA={
+  cad:{balance:'CA$284,120.00',entries:[
+    {date:'Nov 11',desc:'FX Settlement — Maple Import (USD)',ref:'txn_8A2k',dr:'',cr:'CA$16,980.00',bal:'CA$284,120'},
+    {date:'Nov 11',desc:'Wise transfer fee',ref:'fee_221',dr:'CA$8.49',cr:'',bal:'CA$267,148'},
+    {date:'Nov 11',desc:'FX Settlement — Pacific Freight (GBP)',ref:'txn_7F9x',cr:'CA$14,040.00',dr:'',bal:'CA$267,156'},
+    {date:'Nov 11',desc:'Incoming wire — Northern Steel',ref:'wire_190',cr:'CA$42,100.00',dr:'',bal:'CA$253,116'},
+    {date:'Nov 10',desc:'FX Settlement — Sundial Media (EUR)',ref:'txn_6B1m',dr:'CA$7,310.00',cr:'',bal:'CA$211,016'},
+    {date:'Nov 10',desc:'Stripe Treasury sweep',ref:'str_441',cr:'CA$80,000.00',dr:'',bal:'CA$218,326'},
+    {date:'Nov 10',desc:'Payroll disbursement',ref:'prl_88',dr:'CA$44,200.00',cr:'',bal:'CA$138,326'},
+    {date:'Nov 09',desc:'FX Settlement — Lakeview Pharma (INR)',ref:'txn_4D2p',cr:'CA$10,350.00',dr:'',bal:'CA$182,526'},
+  ]},
+  usd:{balance:'US$142,880.00',entries:[
+    {date:'Nov 11',desc:'Incoming — Maple Import Co.',ref:'txn_8A2k',cr:'US$12,440.00',dr:'',bal:'US$142,880'},
+    {date:'Nov 10',desc:'FBO sweep to Wise pool',ref:'wise_pool_9',dr:'US$50,000.00',cr:'',bal:'US$130,440'},
+    {date:'Nov 09',desc:'Incoming — Redwood Tech',ref:'txn_3E8q',cr:'US$2,100.00',dr:'',bal:'US$180,440'},
+  ]},
+  gbp:{balance:'£48,220.00',entries:[
+    {date:'Nov 11',desc:'Incoming — Pacific Freight',ref:'txn_7F9x',cr:'£8,200.00',dr:'',bal:'£48,220'},
+    {date:'Nov 10',desc:'SWIFT settlement fee',ref:'fee_sw9',dr:'£18.00',cr:'',bal:'£40,038'},
+    {date:'Nov 09',desc:'Incoming — Aurora Mining',ref:'txn_0I5t',cr:'£12,840.00',dr:'',bal:'£40,056'},
+  ]},
+};
+function buildLedger(){
+  const key=document.getElementById('ledger-acct').value;
+  const data=LEDGER_DATA[key];
+  document.getElementById('ledger-balance').textContent='Balance: '+data.balance;
+  document.getElementById('ledger-count').textContent=data.entries.length+' entries';
+  const wrap=document.getElementById('ledger-rows');
+  wrap.innerHTML='';
+  data.entries.forEach(e=>{
+    const d=document.createElement('div');d.className='ledger-row';
+    d.innerHTML=`<span style="color:var(--muted);font-size:11px">${e.date}</span>
+    <span style="font-weight:500">${e.desc}</span>
+    <span class="mono" style="font-size:10px;color:var(--subtle)">${e.ref}</span>
+    <span class="mono dr">${e.dr||'—'}</span>
+    <span class="mono cr">${e.cr||'—'}</span>
+    <span class="mono" style="font-weight:600">${e.bal}</span>`;
+    d.onclick=()=>showToast('Entry '+e.ref+' — audited');
+    wrap.appendChild(d);
+  });
+}
+
+// ── API ──
+const API_ENDPOINTS=[
+  {sec:'Payments',eps:[
+    {m:'POST',path:'/v2/payments',req:`<span class="jk">"amount"</span>: <span class="jn">16980</span>,\n<span class="jk">"currency"</span>: <span class="js">"USD"</span>,\n<span class="jk">"source_currency"</span>: <span class="js">"CAD"</span>,\n<span class="jk">"recipient_id"</span>: <span class="js">"rec_MaplImport"</span>,\n<span class="jk">"reference"</span>: <span class="js">"INV-2026-0441"</span>,\n<span class="jk">"routing"</span>: <span class="js">"wise"</span>`,resp:`<span class="jk">"id"</span>: <span class="js">"txn_8A2k"</span>,\n<span class="jk">"status"</span>: <span class="js">"pending"</span>,\n<span class="jk">"fx_rate"</span>: <span class="jn">0.7312</span>,\n<span class="jk">"estimated_arrival"</span>: <span class="js">"2026-11-12T14:00:00Z"</span>,\n<span class="jk">"fee"</span>: <span class="jn">8.49</span>`,status:'200 OK'},
+    {m:'GET',path:'/v2/payments/{id}',req:`<span class="jk">"id"</span>: <span class="js">"txn_8A2k"</span>`,resp:`<span class="jk">"id"</span>: <span class="js">"txn_8A2k"</span>,\n<span class="jk">"status"</span>: <span class="js">"settled"</span>,\n<span class="jk">"settled_at"</span>: <span class="js">"2026-11-12T09:14:00Z"</span>`,status:'200 OK'},
+  ]},
+  {sec:'Accounts',eps:[
+    {m:'GET',path:'/v2/accounts',req:`<span class="jb">// No body needed</span>`,resp:`<span class="jk">"accounts"</span>: [{\n  <span class="jk">"id"</span>: <span class="js">"acct_cad_1"</span>,\n  <span class="jk">"currency"</span>: <span class="js">"CAD"</span>,\n  <span class="jk">"balance"</span>: <span class="jn">284120.00</span>\n}]`,status:'200 OK'},
+    {m:'POST',path:'/v2/accounts/{id}/transfer',req:`<span class="jk">"amount"</span>: <span class="jn">50000</span>,\n<span class="jk">"destination_account"</span>: <span class="js">"acct_usd_2"</span>`,resp:`<span class="jk">"transfer_id"</span>: <span class="js">"xfr_a9b2"</span>,\n<span class="jk">"status"</span>: <span class="js">"completed"</span>`,status:'200 OK'},
+  ]},
+  {sec:'FX Rates',eps:[
+    {m:'GET',path:'/v2/rates?from=CAD&to=USD',req:`<span class="jb">// Query params: from, to, amount</span>`,resp:`<span class="jk">"rate"</span>: <span class="jn">0.7312</span>,\n<span class="jk">"mid_market"</span>: <span class="jn">0.7318</span>,\n<span class="jk">"spread"</span>: <span class="jn">0.0006</span>,\n<span class="jk">"valid_until"</span>: <span class="js">"2026-11-10T15:30:00Z"</span>`,status:'200 OK'},
+  ]},
+  {sec:'Webhooks',eps:[
+    {m:'POST',path:'/v2/webhooks',req:`<span class="jk">"url"</span>: <span class="js">"https://your.app/hooks/loop"</span>,\n<span class="jk">"events"</span>: [<span class="js">"payment.settled"</span>, <span class="js">"payment.failed"</span>]`,resp:`<span class="jk">"id"</span>: <span class="js">"wh_b7c2"</span>,\n<span class="jk">"status"</span>: <span class="js">"active"</span>`,status:'201 Created'},
+    {m:'PATCH',path:'/v2/payments/{id}/cancel',req:`<span class="jk">"reason"</span>: <span class="js">"duplicate"</span>`,resp:`<span class="jk">"id"</span>: <span class="js">"txn_3E8q"</span>,\n<span class="jk">"status"</span>: <span class="js">"cancelled"</span>`,status:'200 OK'},
+  ]},
+];
+function initApi(){
+  const wrap=document.getElementById('api-endpoints');
+  if(wrap.children.length>0) return;
+  API_ENDPOINTS.forEach(sec=>{
+    const sh=document.createElement('div');sh.className='api-sec';sh.textContent=sec.sec;wrap.appendChild(sh);
+    sec.eps.forEach((ep,i)=>{
+      const d=document.createElement('div');
+      d.className='ep'+(i===0&&sec.sec==='Payments'?' active':'');
+      const mc={'GET':'m-get','POST':'m-post','PATCH':'m-patch','DELETE':'m-delete'}[ep.m]||'m-get';
+      d.innerHTML=`<span class="ep-method ${mc}">${ep.m}</span><span class="ep-path">${ep.path}</span>`;
+      d.onclick=()=>loadApiEndpoint(ep,d);
+      wrap.appendChild(d);
+      if(d.classList.contains('active')) loadApiEndpoint(ep,d);
+    });
+  });
+}
+function loadApiEndpoint(ep,el){
+  document.querySelectorAll('.ep').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  const mc={'GET':'m-get','POST':'m-post','PATCH':'m-patch','DELETE':'m-delete'}[ep.m]||'m-get';
+  document.getElementById('ap-method').className='ep-method '+mc;
+  document.getElementById('ap-method').textContent=ep.m;
+  document.getElementById('ap-url').value=ep.path;
+  document.getElementById('api-request').innerHTML=`<pre>{\n${ep.req}\n}</pre>`;
+  document.getElementById('api-response').innerHTML=`<pre>{\n${ep.resp}\n}</pre>`;
+  document.getElementById('api-status-badge').textContent=ep.status;
+  document.getElementById('api-status-badge').style.background=ep.status.startsWith('2')?'rgba(22,163,74,.1)':'rgba(220,38,38,.1)';
+  document.getElementById('api-status-badge').style.color=ep.status.startsWith('2')?'var(--green)':'var(--red)';
+}
+function runApi(){
+  const badge=document.getElementById('api-status-badge');
+  badge.textContent='…';badge.style.background='rgba(217,119,6,.1)';badge.style.color='var(--amber)';
+  setTimeout(()=>{badge.textContent='200 OK';badge.style.background='rgba(22,163,74,.1)';badge.style.color='var(--green)';showToast('API request sent — 200 OK · 42ms');},900);
+}
+
+// ── OBSERVE ──
+const SERVICES=[
+  {name:'payments-service',p99:'38ms',ok:true},{name:'fx-rate-service',p99:'12ms',ok:true},
+  {name:'ledger-service',p99:'24ms',ok:true},{name:'notification-service',p99:'91ms',ok:true},
+  {name:'auth-service',p99:'18ms',ok:true},{name:'webhook-service',p99:'56ms',ok:true},
+];
+const ERROR_RATES=[
+  {name:'payments-service',pct:0.3},{name:'fx-rate-service',pct:0.0},{name:'ledger-service',pct:0.1},
+  {name:'notification-service',pct:1.2},{name:'webhook-service',pct:0.4},
+];
+const INFRA=[
+  {name:'Heroku — web dynos',val:'4× Standard-2X',ok:true},
+  {name:'AWS RDS (Postgres)',val:'db.t3.medium',ok:true},
+  {name:'AWS ElastiCache',val:'Redis 7.0',ok:true},
+  {name:'Netlify CDN',val:'React app',ok:true},
+  {name:'Heroku Scheduler',val:'3 jobs active',ok:true},
+];
+const LOGS=[
+  {level:'ok',msg:'[payments] txn_8A2k settled — CAD→USD $16,980 via Wise'},
+  {level:'info',msg:'[fx] Rate refreshed — CAD/USD: 0.7312 (spread: 0.0006)'},
+  {level:'info',msg:'[ledger] Double-entry posted — cr CA$16,980 / dr USD$12,440'},
+  {level:'warn',msg:'[notify] Delivery retry #2 — webhook wh_8b3c (5xx upstream)'},
+  {level:'ok',msg:'[auth] JWT validated — business acct_maple_1'},
+  {level:'err',msg:'[payments] txn_3E8q failed — bank validation error code: 1051'},
+  {level:'info',msg:'[queue] DLQ enqueue — payments.failed.retry (1 pending)'},
+  {level:'ok',msg:'[fx] CAD/GBP rate locked — 0.5841 for txn_7F9x'},
+];
+function buildObserve(){
+  const sh=document.getElementById('svc-health');
+  if(sh.children.length) return;
+  SERVICES.forEach(s=>{
+    const d=document.createElement('div');d.className='svc-row';
+    d.innerHTML=`<div class="svc-dot" style="background:${s.ok?'var(--green)':'var(--red)'}"></div>
+    <span class="svc-name" style="font-size:12px">${s.name}</span>
+    <span class="svc-p99">p99 ${s.p99}</span>`;
+    sh.appendChild(d);
+  });
+  const er=document.getElementById('error-rates');
+  ERROR_RATES.forEach(e=>{
+    const d=document.createElement('div');d.className='bar-row';
+    const c=e.pct>1?'var(--red)':e.pct>0?'var(--amber)':'var(--green)';
+    d.innerHTML=`<div class="bar-label">${e.name}</div>
+    <div class="bar-bg"><div class="bar-fill" data-p="${e.pct*10}" style="width:0%;background:${c}"></div></div>
+    <div class="bar-pct">${e.pct}%</div>`;
+    er.appendChild(d);
+  });
+  const inf=document.getElementById('infra-status');
+  INFRA.forEach(i=>{
+    const d=document.createElement('div');d.className='svc-row';
+    d.innerHTML=`<div class="svc-dot" style="background:${i.ok?'var(--green)':'var(--red)'}"></div>
+    <span class="svc-name" style="font-size:12px">${i.name}</span>
+    <span class="svc-p99" style="color:var(--muted)">${i.val}</span>`;
+    inf.appendChild(d);
+  });
+  const lw=document.getElementById('prod-logs');
+  LOGS.forEach(l=>{
+    const d=document.createElement('div');d.className='log-line';
+    const cls={'ok':'log-ok','info':'log-info','warn':'log-warn','err':'log-err'}[l.level];
+    d.innerHTML=`<span class="${cls}">[${l.level.toUpperCase()}]</span> ${l.msg}`;
+    lw.appendChild(d);
+  });
+}
+function animateObserve(){
+  buildObserve();
+  setTimeout(()=>{
+    document.querySelectorAll('.bar-fill[data-p]').forEach(b=>{
+      b.style.width=(parseFloat(b.dataset.p)*10)+'%';
+    });
+  },150);
+}
+
+// ── CODE ──
+const CODE={
+  payment:`<pre><span class="cc"># app/services/payments/create_service.rb — Rails</span>
+<span class="ck">module</span> <span class="cn">Payments</span>
+  <span class="ck">class</span> <span class="cn">CreateService</span>
+    <span class="ck">include</span> <span class="cn">Callable</span>
+
+    <span class="ck">def</span> <span class="cf">initialize</span>(business:, params:)
+      <span class="co">@business</span> = business
+      <span class="co">@params</span>   = params
+    <span class="ck">end</span>
+
+    <span class="ck">def</span> <span class="cf">call</span>
+      <span class="cn">ApplicationRecord</span>.transaction <span class="ck">do</span>
+        rate   = <span class="cn">FxRateService</span>.lock(from: <span class="co">@params</span>[<span class="cs">:currency</span>], to: <span class="cs">:CAD</span>)
+        txn    = <span class="cn">Payment</span>.create!(payment_attrs(rate))
+        <span class="cn">LedgerService</span>.post_double_entry(txn)
+        <span class="cn">RoutingService</span>.dispatch(txn)
+        txn
+      <span class="ck">end</span>
+    <span class="ck">end</span>
+
+    <span class="ck">private</span>
+
+    <span class="ck">def</span> <span class="cf">payment_attrs</span>(rate)
+      {
+        business:         <span class="co">@business</span>,
+        amount_cents:     (<span class="co">@params</span>[<span class="cs">:amount</span>] * <span class="cn">100</span>).round,
+        currency:         <span class="co">@params</span>[<span class="cs">:currency</span>],
+        fx_rate:          rate.value,
+        status:           <span class="cs">:pending</span>,
+        reference:        <span class="co">@params</span>[<span class="cs">:reference</span>],
+        routing_provider: <span class="co">@params</span>[<span class="cs">:routing</span>] || <span class="cs">:wise</span>,
+      }
+    <span class="ck">end</span>
+  <span class="ck">end</span>
+<span class="ck">end</span></pre>`,
+  ledger:`<pre><span class="cc"># app/models/ledger_entry.rb — double-entry accounting</span>
+<span class="ck">class</span> <span class="cn">LedgerEntry</span> < <span class="cn">ApplicationRecord</span>
+  <span class="ck">belongs_to</span> <span class="cs">:account</span>
+  <span class="ck">belongs_to</span> <span class="cs">:payment</span>, optional: <span class="ck">true</span>
+
+  <span class="ck">validates</span> <span class="cs">:amount_cents</span>, numericality: { greater_than: <span class="cn">0</span> }
+  <span class="ck">validates</span> <span class="cs">:entry_type</span>, inclusion: { in: %w[debit credit] }
+
+  <span class="ck">scope</span> <span class="cs">:debits</span>,  <span class="ck">-></span> { where(entry_type: <span class="cs">'debit'</span>)  }
+  <span class="ck">scope</span> <span class="cs">:credits</span>, <span class="ck">-></span> { where(entry_type: <span class="cs">'credit'</span>) }
+<span class="ck">end</span>
+
+<span class="cc"># app/services/ledger_service.rb</span>
+<span class="ck">class</span> <span class="cn">LedgerService</span>
+  <span class="ck">def</span> <span class="cf">self.post_double_entry</span>(txn)
+    <span class="cn">ApplicationRecord</span>.transaction <span class="ck">do</span>
+      <span class="cc"># Debit source account</span>
+      <span class="cn">LedgerEntry</span>.create!(
+        account:     txn.business.cad_account,
+        payment:     txn,
+        entry_type:  <span class="cs">:debit</span>,
+        amount_cents: txn.cad_amount_cents,
+        description: <span class="cs">"FX payment #{txn.id} → #{txn.currency}"</span>,
+      )
+      <span class="cc"># Credit float account</span>
+      <span class="cn">LedgerEntry</span>.create!(
+        account:     <span class="cn">Account</span>.float_for(txn.currency),
+        payment:     txn,
+        entry_type:  <span class="cs">:credit</span>,
+        amount_cents: txn.amount_cents,
+        description: <span class="cs">"FX float #{txn.id}"</span>,
+      )
+    <span class="ck">end</span>
+  <span class="ck">end</span>
+<span class="ck">end</span></pre>`,
+  fx:`<pre><span class="cc"># app/services/fx_rate_service.rb</span>
+<span class="ck">class</span> <span class="cn">FxRateService</span>
+  CACHE_TTL = <span class="cn">30</span>.seconds
+  PROVIDERS = [<span class="cn">Providers::Wise</span>, <span class="cn">Providers::OpenExchangeRates</span>]
+
+  <span class="ck">def</span> <span class="cf">self.lock</span>(from:, to:)
+    cached = <span class="cn">Rails</span>.cache.fetch(cache_key(from, to), expires_in: CACHE_TTL) <span class="ck">do</span>
+      fetch_from_providers(from, to)
+    <span class="ck">end</span>
+    <span class="cn">FxRateLock</span>.create!(
+      from_currency: from,
+      to_currency:   to,
+      rate:          cached[<span class="cs">:rate</span>],
+      spread:        cached[<span class="cs">:spread</span>],
+      expires_at:    <span class="cn">CACHE_TTL</span>.from_now,
+      provider:      cached[<span class="cs">:provider</span>],
+    )
+  <span class="ck">end</span>
+
+  <span class="ck">def</span> <span class="cf">self.fetch_from_providers</span>(from, to)
+    PROVIDERS.each <span class="ck">do</span> |provider|
+      result = provider.rate(from: from, to: to)
+      <span class="ck">return</span> result <span class="ck">if</span> result[<span class="cs">:rate</span>].present?
+    <span class="ck">rescue</span> => e
+      <span class="cn">Rails</span>.logger.warn(<span class="cs">"FX provider #{provider} failed: #{e.message}"</span>)
+    <span class="ck">end</span>
+    <span class="ck">raise</span> <span class="cn">FxRateUnavailableError</span>
+  <span class="ck">end</span>
+<span class="ck">end</span></pre>`,
+  react:`<pre><span class="cc">// TransferForm.tsx — React + TypeScript</span>
+<span class="ck">import</span> React, { useState, useCallback } <span class="ck">from</span> <span class="cs">'react'</span>;
+<span class="ck">import</span> { useMutation, useQueryClient } <span class="ck">from</span> <span class="cs">'@tanstack/react-query'</span>;
+<span class="ck">import</span> { createPayment } <span class="ck">from</span> <span class="cs">'../api/payments'</span>;
+
+<span class="ck">interface</span> <span class="cn">TransferFormProps</span> { onSuccess: (txn: <span class="cn">Payment</span>) => <span class="ck">void</span>; }
+
+<span class="ck">export function</span> <span class="cn">TransferForm</span>({ onSuccess }: <span class="cn">TransferFormProps</span>) {
+  <span class="ck">const</span> [form, setForm] = useState({ amount: <span class="cs">''</span>, currency: <span class="cs">'USD'</span>, reference: <span class="cs">''</span> });
+  <span class="ck">const</span> qc = useQueryClient();
+
+  <span class="ck">const</span> { mutate, isPending } = useMutation({
+    mutationFn: createPayment,
+    onSuccess(txn) {
+      qc.invalidateQueries({ queryKey: [<span class="cs">'payments'</span>] });
+      onSuccess(txn);
+    },
+  });
+
+  <span class="ck">const</span> handleSubmit = useCallback(<span class="ck">async</span> (e: React.FormEvent) => {
+    e.preventDefault();
+    mutate({ ...form, amount: <span class="cn">parseFloat</span>(form.amount) });
+  }, [form, mutate]);
+
+  <span class="ck">return</span> (
+    &lt;<span class="cf">form</span> onSubmit={handleSubmit}&gt;
+      &lt;<span class="cf">CurrencyInput</span> value={form.amount} currency={form.currency}
+        onChange={(v) => setForm(f => ({ ...f, amount: v }))} /&gt;
+      &lt;<span class="cf">FxRateDisplay</span> from=<span class="cs">"CAD"</span> to={form.currency} amount={form.amount} /&gt;
+      &lt;<span class="cf">button</span> type=<span class="cs">"submit"</span> disabled={isPending}&gt;
+        {isPending ? <span class="cs">'Sending…'</span> : <span class="cs">'Send Payment'</span>}
+      &lt;/<span class="cf">button</span>&gt;
+    &lt;/<span class="cf">form</span>&gt;
+  );
+}</pre>`,
+  django:`<pre><span class="cc"># analytics/views.py — Django REST Framework</span>
+<span class="ck">from</span> rest_framework <span class="ck">import</span> generics
+<span class="ck">from</span> django.db.models <span class="ck">import</span> Sum, Count, Avg
+<span class="ck">from</span> .models <span class="ck">import</span> Payment
+<span class="ck">from</span> .serializers <span class="ck">import</span> VolumeSerializer
+
+<span class="ck">class</span> <span class="cn">PaymentVolumeView</span>(generics.ListAPIView):
+    <span class="cs">"""Cross-border payment volume by corridor."""</span>
+    serializer_class = <span class="cn">VolumeSerializer</span>
+
+    <span class="ck">def</span> <span class="cf">get_queryset</span>(self):
+        days = <span class="cn">int</span>(self.request.query_params.get(<span class="cs">'days'</span>, <span class="cn">30</span>))
+        <span class="ck">return</span> (
+            <span class="cn">Payment</span>.objects
+            .filter(
+                status=<span class="cs">'settled'</span>,
+                created_at__gte=timezone.now() - timedelta(days=days),
+            )
+            .values(<span class="cs">'source_currency'</span>, <span class="cs">'currency'</span>)
+            .annotate(
+                total_volume=<span class="cn">Sum</span>(<span class="cs">'amount_cents'</span>),
+                avg_fx_rate=<span class="cn">Avg</span>(<span class="cs">'fx_rate'</span>),
+                count=<span class="cn">Count</span>(<span class="cs">'id'</span>),
+            )
+            .order_by(<span class="cs">'-total_volume'</span>)
+        )
+
+<span class="cc"># analytics/serializers.py</span>
+<span class="ck">class</span> <span class="cn">VolumeSerializer</span>(serializers.Serializer):
+    source_currency = serializers.CharField()
+    currency        = serializers.CharField()
+    total_volume    = serializers.SerializerMethodField()
+    avg_fx_rate     = serializers.FloatField()
+    count           = serializers.IntegerField()
+
+    <span class="ck">def</span> <span class="cf">get_total_volume</span>(self, obj):
+        <span class="ck">return</span> obj[<span class="cs">'total_volume'</span>] / <span class="cn">100</span></pre>`,
+  spec:`<pre><span class="cc"># spec/services/payments/create_service_spec.rb</span>
+<span class="ck">require</span> <span class="cs">'rails_helper'</span>
+
+RSpec.describe <span class="cn">Payments::CreateService</span> <span class="ck">do</span>
+  <span class="ck">let</span>(:business) { create(:business) }
+  <span class="ck">let</span>(:params) {{ amount: <span class="cn">16_980</span>, currency: <span class="cs">'USD'</span>, reference: <span class="cs">'INV-001'</span>, routing: <span class="cs">'wise'</span> }}
+
+  before <span class="ck">do</span>
+    allow(<span class="cn">FxRateService</span>).to receive(<span class="cs">:lock</span>).and_return(
+      instance_double(<span class="cn">FxRateLock</span>, value: <span class="cn">0.7312</span>)
+    )
+  <span class="ck">end</span>
+
+  describe <span class="cs">'#call'</span> <span class="ck">do</span>
+    subject(:payment) { described_class.call(business: business, params: params) }
+
+    it <span class="cs">'creates a pending Payment'</span> <span class="ck">do</span>
+      expect(payment.status).to eq(<span class="cs">'pending'</span>)
+      expect(payment.fx_rate).to eq(<span class="cn">0.7312</span>)
+    <span class="ck">end</span>
+
+    it <span class="cs">'posts a double-entry ledger'</span> <span class="ck">do</span>
+      expect { payment }.to change(<span class="cn">LedgerEntry</span>, :count).by(<span class="cn">2</span>)
+    <span class="ck">end</span>
+
+    it <span class="cs">'dispatches via RoutingService'</span> <span class="ck">do</span>
+      expect(<span class="cn">RoutingService</span>).to receive(<span class="cs">:dispatch</span>)
+      payment
+    <span class="ck">end</span>
+
+    context <span class="cs">'when FX rate is unavailable'</span> <span class="ck">do</span>
+      before { allow(<span class="cn">FxRateService</span>).to receive(<span class="cs">:lock</span>).and_raise(<span class="cm">FxRateUnavailableError</span>) }
+      it <span class="cs">'rolls back and raises'</span> <span class="ck">do</span>
+        expect { payment }.to raise_error(<span class="cm">FxRateUnavailableError</span>)
+          .and not_change(<span class="cn">Payment</span>, :count)
+      <span class="ck">end</span>
+    <span class="ck">end</span>
+  <span class="ck">end</span>
+<span class="ck">end</span></pre>`,
+};
+let codeInited=false;
+function initCode(){
+  if(codeInited) return;codeInited=true;
+  document.getElementById('code-display').innerHTML=CODE.payment;
+}
+function switchCode(key,el){
+  document.querySelectorAll('.code-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('code-display').innerHTML=CODE[key]||'';
+}
+
+// ── MODAL ──
+function openModal(type){
+  document.getElementById('modal-title').textContent=type==='journal'?'Manual Journal Entry':'Send International Payment';
+  if(type==='journal'){
+    document.getElementById('modal-body').innerHTML=`
+      <div class="fl"><label>Account</label><select class="fs"><option>CAD Operating</option><option>USD Float</option><option>GBP Settlement</option></select></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <div class="fl"><label>Debit (CAD)</label><input class="fi" placeholder="0.00"></div>
+        <div class="fl"><label>Credit (CAD)</label><input class="fi" placeholder="0.00"></div>
+      </div>
+      <div class="fl"><label>Description</label><input class="fi" placeholder="Manual adjustment"></div>
+      <div class="fl"><label>Reference</label><input class="fi" placeholder="JRN-2026-001"></div>`;
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function updateRate(){
+  const amt=parseFloat(document.getElementById('f-amt')?.value||0);
+  const cur=document.getElementById('f-currency')?.value;
+  const rates={USD:0.7312,EUR:0.6703,GBP:0.5841,MXN:12.84,INR:60.42,PHP:41.2};
+  const r=rates[cur]||1;
+  if(amt>0){
+    document.getElementById('rate-box').innerHTML=`${(amt*r).toLocaleString('en-CA',{style:'currency',currency:cur})} ${cur}<div class="rate-sub">Rate: 1 CAD = ${r} ${cur} · Via Wise · Fee est. CA$${(amt*0.0005).toFixed(2)}</div>`;
+  }
+}
+function submitPayment(){
+  const amt=document.getElementById('f-amt')?.value||'';
+  const cur=document.getElementById('f-currency')?.value;
+  closeModal();
+  if(amt) showToast('Payment of CA$'+parseFloat(amt).toLocaleString()+' → '+cur+' queued via Wise ✓');
+  else showToast('Payment created and queued ✓');
+}
+
+// ── INIT ──
+buildCorridors();
+buildTxnFeed();
+startLiveTxn();
+buildPayTable(PAY_DATA);
+loadPaymentDetail(PAY_DATA[0]);
+buildLedger();
+buildObserve();
+setTimeout(drawVolumeChart,100);
+window.addEventListener('resize',drawVolumeChart);
+document.getElementById('study-onboarding')?.classList.add('active');
+document.getElementById('nav-dashboard').classList.add('active');
+</script>
+
+</body></html>
